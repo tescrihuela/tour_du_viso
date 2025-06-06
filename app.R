@@ -50,6 +50,9 @@ ui <- fluidPage(
   .sidebar-panel h4 {
     margin-top: 0;
   }
+  .leaflet-popup-content-wrapper {
+    width: 540px;
+  }
 ")),
 
   # Création de la layout
