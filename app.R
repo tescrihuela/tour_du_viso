@@ -32,7 +32,7 @@ ui <- fluidPage(
     top: 30px;
     right: 30px;
     width: 300px;
-    background-color: rgba(255,255,255,0.75);
+    background-color: rgba(255,255,255,0.9);
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
