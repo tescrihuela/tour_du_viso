@@ -11,10 +11,16 @@ trace$longueur <- trace %>% st_transform(2154) %>% st_length()
 
 
 #### Infobulles ####
+trace$popup <- sprintf(
+  "<div style='width:500px;'>
+     <img src='img/%s.png' style='width:100%%; max-width:100%%; margin-top:5px;'/>
+   </div>",
+  trace$name
+) %>% lapply(htmltools::HTML)
 trace$tooltip <- sprintf(
-  "<strong>Trace : </strong>%s<br>
-  <strong>Longueur : </strong>%s km<br>",
-  trace$name, round(trace$longueur/1000, 1)
+     "<strong>Trace : </strong>%s<br>
+     <strong>Longueur : </strong>%s km<br>",
+    trace$name, round(trace$longueur / 1000, 1)
 ) %>% lapply(htmltools::HTML)
 pal <- colorFactor(
   palette = c('red', 'blue', 'purple',  'brown'),
@@ -26,12 +32,15 @@ ui <- fluidPage(
 
   # Chargement du CSS
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "css/default.css")),
+  tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"),
   tags$style(HTML("
   .sidebar-panel {
     position: absolute;
     top: 30px;
     right: 30px;
-    width: 300px;
+    width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
     background-color: rgba(255,255,255,0.9);
     padding: 15px;
     border-radius: 10px;
@@ -53,6 +62,10 @@ ui <- fluidPage(
           width = "100%"
         ),
         div(class = "sidebar-panel",
+          tags$p(
+            tags$i(class = "fa fa-search", style = "margin-right: 8px;"),
+            em("Cliquez sur un itinéraire pour afficher son dénivelé.")
+          ),
           h3("Transport"),
           br(),
           h4("Aller le jeudi 26 juin"),
@@ -65,19 +78,24 @@ ui <- fluidPage(
             tags$li(strong("Navette :"), " départ de Ristolas à 18h00, arrivée à la gare vers 19h20"),
             tags$li(strong("Train de nuit :"), "départ Mont-Dauphin Guillestre à 20h27, arrivée Gare d'Austerlitz à 06h54 le lendemain"),
           ),
+          tags$hr(),
           h3("Hébergements"),
           tags$ul(
             tags$li(strong("Vendredi soir :"), " Nuit au ", tags$a(href="https://www.refuges.info/point/2959/refuge-garde/refuge-de-Granero/", target="_blank", "refuge Granero")),
             tags$li(strong("Samedi soir :"), " Nuit au ", tags$a(href="https://www.refuges.info/point/2015/refuge-garde/queyras/refuge-quintino-sella/", target="_blank", "refuge Quintino Sella")),
             tags$li(strong("Dimanche soir :"), " Nuit au ", tags$a(href="https://www.refuges.info/point/2014/refuge-garde/refuge-Vallanta-Valante/", target="_blank", "refuge Vallanta")),
           ),
-          h3("Autres infos"),
+          tags$hr(),
+          h3("Infos importantes"),
           tags$ul(
             tags$li("Prévoir un sac à viande pour les nuits en refuge"),
             tags$li("Prendre de l'argent liquide pour les refuges (pas de CB)"),
             tags$li("Les douches sont payantes dans les refuges (~4€ les 20L)"),
             tags$li("Les bâtons de randonnée sont fortement conseillés"),
-          )
+          ),
+          tags$hr(),
+          h3("Téléchargement"),
+          downloadButton("download_trace", "Télécharger la trace (GPX)")
         )
       )
     )
@@ -106,7 +124,7 @@ server <- function(input, output, session) {
       color = ~pal(name),
       group = "Trace",
       weight = 5,
-      popup = trace$tooltip,
+      popup = trace$popup,
       label = trace$tooltip,
       highlightOptions = highlightOptions(
         color = "#b16694", 
@@ -131,6 +149,25 @@ server <- function(input, output, session) {
     )
     
   })
+
+output$download_trace <- downloadHandler(
+  filename = function() {
+    "trace_finale.gpx"
+  },
+  content = function(file) {
+    # Conversion au format WGS84 requis pour GPX
+    trace_wgs84 <- st_transform(trace, 4326)
+
+    # Nettoyage : garder uniquement les colonnes simples
+    trace_clean <- trace_wgs84 %>%
+      select(name, geometry)  # ou autres colonnes simples que tu veux garder
+
+    # Écriture au format GPX
+    st_write(trace_clean, file, driver = "GPX", delete_dsn = TRUE, layer_options = "FORCE_GPX_TRACK=YES")
+  }
+)
+
+
 }
 
 shinyApp(ui, server)
