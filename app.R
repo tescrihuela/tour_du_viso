@@ -92,10 +92,10 @@ server <- function(input, output, session) {
     leaflet() %>% 
     setView(lng = 7, lat = 44.7, zoom = 11) %>%
     
-    addTiles(group="OSM") %>%
-    addTiles("https://data.geopf.fr/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/jpeg&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", options = WMSTileOptions(tileSize = 256),group = "Orthos") %>%      
     addTiles("https://data.geopf.fr/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/png&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",options = WMSTileOptions(tileSize = 256),group = "Plan IGN") %>%
+    addTiles(group="OSM") %>%
     addTiles("https://a.tile.opentopomap.org/{z}/{x}/{y}.png", group = "OpenTopoMap") %>%
+    addTiles("https://data.geopf.fr/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/jpeg&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}", options = WMSTileOptions(tileSize = 256),group = "Orthos") %>%      
 
 
     addPolylines(
@@ -123,7 +123,7 @@ server <- function(input, output, session) {
     ) %>%
 
     addLayersControl(
-      baseGroups = c("OSM", "OpenTopoMap", "Orthos", "Plan IGN"),
+      baseGroups = c("Plan IGN", "OSM", "OpenTopoMap", "Orthos"),
       overlayGroups = c("Trace"),
       position = "bottomleft",
       options = layersControlOptions(collapsed = FALSE)
