@@ -6,7 +6,7 @@ suppressMessages(library(sf))
 
 
 #### Input data ####
-trace <- st_read("www/data/trace.geojson")
+trace <- st_read("www/data/trace_finale.geojson")
 trace$longueur <- trace %>% st_transform(2154) %>% st_length()
 
 
@@ -74,7 +74,7 @@ ui <- fluidPage(
           h3("Autres infos"),
           tags$ul(
             tags$li("Prévoir un sac à viande pour les nuits en refuge"),
-            tags$li("Prévoir de l'argent liquide pour les refuges (pas de CB)"),
+            tags$li("Prendre de l'argent liquide pour les refuges (pas de CB)"),
             tags$li("Les douches sont payantes dans les refuges (~4€ les 20L)"),
             tags$li("Les bâtons de randonnée sont fortement conseillés"),
           )
