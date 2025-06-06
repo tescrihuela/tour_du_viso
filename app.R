@@ -67,7 +67,7 @@ ui <- fluidPage(
           ),
           h3("Hébergements"),
           tags$ul(
-            tags$li(strong("Vendredi soir :"), " Nuit au ", tags$a(href="hhttps://www.refuges.info/point/2959/refuge-garde/refuge-de-Granero/", target="_blank", "refuge Granero")),
+            tags$li(strong("Vendredi soir :"), " Nuit au ", tags$a(href="https://www.refuges.info/point/2959/refuge-garde/refuge-de-Granero/", target="_blank", "refuge Granero")),
             tags$li(strong("Samedi soir :"), " Nuit au ", tags$a(href="https://www.refuges.info/point/2015/refuge-garde/queyras/refuge-quintino-sella/", target="_blank", "refuge Quintino Sella")),
             tags$li(strong("Dimanche soir :"), " Nuit au ", tags$a(href="https://www.refuges.info/point/2014/refuge-garde/refuge-Vallanta-Valante/", target="_blank", "refuge Vallanta")),
           ),
