@@ -76,6 +76,7 @@ ui <- fluidPage(
             tags$li("Prévoir un sac à viande pour les nuits en refuge"),
             tags$li("Prévoir de l'argent liquide pour les refuges (pas de CB)"),
             tags$li("Les douches sont payantes dans les refuges (~4€ les 20L)"),
+            tags$li("Les bâtons de randonnée sont fortement conseillés"),
           )
         )
       )
