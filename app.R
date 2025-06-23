@@ -95,6 +95,7 @@ ui <- fluidPage(
             tags$li("Prendre de l'argent liquide pour les refuges (pas de CB)"),
             tags$li("Les douches sont payantes dans les refuges (~4€ les 20L)"),
             tags$li("Les bâtons de randonnée sont fortement conseillés"),
+            tags$li("Liste matériel : ", tags$a(href="https://lite.framacalc.org/cgqcvr3l2f-af88", target="_blank", "ici")),
           ),
           tags$hr(),
           h3("Téléchargement"),
