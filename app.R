@@ -6,7 +6,7 @@ library(htmltools)
 library(sf)
 
 #### Données ####
-trace <- st_read("www/data/trace_finale.geojson", quiet = TRUE)
+trace <- st_read("www/data/tour_du_viso.geojson", quiet = TRUE)
 trace$longueur <- trace %>% st_transform(2154) %>% st_length()
 
 trace$popup <- sprintf(
@@ -207,11 +207,10 @@ server <- function(input, output, session) {
 
   output$download_trace <- downloadHandler(
     filename = function() {
-      "trace_finale.gpx"
+      "tour_du_viso.gpx"
     },
     content = function(file) {
-      trace_wgs84 <- st_transform(trace, 4326)
-      trace_clean <- trace_wgs84 %>% select(name, geometry)
+      trace_clean <- trace %>% st_transform(4326) %>% select(name, geometry) %>% st_union()
       st_write(trace_clean, file, driver = "GPX", delete_dsn = TRUE, layer_options = "FORCE_GPX_TRACK=YES")
     }
   )
